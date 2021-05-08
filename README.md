@@ -1,10 +1,10 @@
 # Algoritmos-y-programacion-III
 
-#FACTORIO.
+##FACTORIO.
 
 En esta ocasión vamos a modelar extractores de carbón, hierro, cintas transportadoras y cajas contenedoras. Los extractores extraen menas, las cintas transportan lo que le pongas encima y las cajas simplemente contienen lo que le depositan.
 
-**Los tres escenarios a implementar:**
+* **Los tres escenarios a implementar:**
 
  ```
         1) En este escenario queremos conectar un extractor de carbón a una caja, extraer una mena y que la misma sea depositada en la caja. Para lograr esto el extractor debe tener energía suficiente (en este caso para la única mena que queremos extraer necesitamos 5 joules) y debe estar conectado a la caja. 
@@ -23,4 +23,5 @@ En esta ocasión vamos a modelar extractores de carbón, hierro, cintas transpor
 
 ### Enunciado:
 
-Para leer el enunciado completp ingresa <a href="https://github.com/IAvecilla/Algoritmos-y-programacion-III/blob/main/01-Factorio/Consigna.md" target="_blank">AQUÍ<a>
+Para leer el enunciado completp ingresar
+<a href="htttps://github.com/IAvecilla/Algoritmos-y-programacion-III/blob/main/01-Factorio/Consigna.md" target="_blank">AQUÍ<a>
