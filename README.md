@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Algoritmos-y-programacion-III
 
 #FACTORIO.
@@ -21,3 +22,6 @@ En esta ocasión vamos a modelar extractores de carbón, hierro, cintas transpor
 
 
     ```
+=======
+# Algoritmos y programacion III - 1C 2021
+>>>>>>> 92cff54b7eb7b31ef0d400ccab7f7b2663368bbe
