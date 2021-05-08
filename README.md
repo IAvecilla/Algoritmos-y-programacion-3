@@ -22,5 +22,4 @@ En esta ocasión vamos a modelar extractores de carbón, hierro, cintas transpor
 
 ### Enunciado:
 
-Para leer el enunciado completp ingresar
-<a href="htttps://github.com/IAvecilla/Algoritmos-y-programacion-III/blob/main/01-Factorio/Consigna.md" target="_blank">AQUÍ<a>
+Para leer el enunciado completo ingresar a 01-Factorio/Consigna.md
