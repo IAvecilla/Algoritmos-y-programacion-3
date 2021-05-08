@@ -19,9 +19,8 @@ En esta ocasión vamos a modelar extractores de carbón, hierro, cintas transpor
 		3) Para este último escenario, queremos agregar un nuevo extractor, pero esta vez de hierro, conectado al circuito anterior a través de una nueva cinta. Para lograrlo debemos conectar el extractor de carbón a la cinta A, el de hierro a la cinta B, la cinta B a la cinta A y la cinta A a la caja.
 		Luego de conectar todo el sistema, le indicaremos a cada extractor que extraiga y a ambas cintas que transporten su contenido.
 		Finalmente, debemos asegurarnos que la caja contenga una mena de hierro y una de carbón y que ambas cintas estén vacías.
-
-
     ```
+
 ### Enunciado:
 
 Para leer el enunciado completp ingresa <a href="https://github.com/IAvecilla/Algoritmos-y-programacion-III/blob/main/01-Factorio/Consigna.md" target="_blank">AQUÍ<a>
