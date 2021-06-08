@@ -119,96 +119,42 @@ TestCase subclass: #SentenceFinderByPrefixTest
 	category: 'Stack-Exercise'!
 
 
-!classDefinition: #ContentWithinTheStack category: 'Stack-Exercise'!
-Object subclass: #ContentWithinTheStack
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Stack-Exercise'!
-
-!ContentWithinTheStack methodsFor: 'private' stamp: 'SC 6/5/2021 19:59:43'!
-myContentIsEmpty
-
-	self subclassResponsibility.! !
-
-!ContentWithinTheStack methodsFor: 'private' stamp: 'SC 6/5/2021 20:09:16'!
-pop
-	^ self subclassResponsibility.! !
-
-!ContentWithinTheStack methodsFor: 'private' stamp: 'SC 6/5/2021 20:44:16'!
-size
-	^ self subclassResponsibility.! !
-
-!ContentWithinTheStack methodsFor: 'private' stamp: 'SC 6/5/2021 19:35:02'!
-top
-	^self subclassResponsibility.! !
-
-
-!classDefinition: #ContentWithinTheStackIsEmpty category: 'Stack-Exercise'!
-ContentWithinTheStack subclass: #ContentWithinTheStackIsEmpty
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Stack-Exercise'!
-
-
-
-!classDefinition: #ContentWithinTheStackIsNotEmpty category: 'Stack-Exercise'!
-ContentWithinTheStack subclass: #ContentWithinTheStackIsNotEmpty
-	instanceVariableNames: 'value'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Stack-Exercise'!
-
-
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-!classDefinition: 'ContentWithinTheStackIsNotEmpty class' category: 'Stack-Exercise'!
-ContentWithinTheStackIsNotEmpty class
-	instanceVariableNames: ''!
-
-!ContentWithinTheStackIsNotEmpty class methodsFor: 'as yet unclassified' stamp: 'SC 6/5/2021 20:18:23'!
-with: content
-	^self new initalizeWith: content.! !
-
-
 !classDefinition: #OOStack category: 'Stack-Exercise'!
 Object subclass: #OOStack
-	instanceVariableNames: 'content collection'
+	instanceVariableNames: 'objectTope'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!OOStack methodsFor: 'as yet unclassified' stamp: 'SC 6/5/2021 21:36:58'!
+!OOStack methodsFor: 'initialization' stamp: 'SC 6/7/2021 22:58:22'!
 initialize
-	collection _ OrderedCollection new.
+	objectTope _ OOStackObjectEmpty new.
 ! !
 
-!OOStack methodsFor: 'as yet unclassified' stamp: 'SC 6/5/2021 21:25:44'!
+
+!OOStack methodsFor: 'features' stamp: 'SC 6/7/2021 20:11:40'!
 isEmpty
-	^ collection isEmpty.! !
+	^ objectTope isEmptyObject.! !
 
-!OOStack methodsFor: 'as yet unclassified' stamp: 'SC 6/5/2021 17:01:38'!
+!OOStack methodsFor: 'features' stamp: 'SC 6/8/2021 08:10:45'!
 pop
+	| aElement |
+	aElement    _ objectTope topObject.
+	objectTope _ objectTope nextObject.
+	^aElement.! !
 
-	collection isEmpty ifTrue: [
-		self error: OOStack stackEmptyErrorDescription ].
-	^collection removeLast.! !
+!OOStack methodsFor: 'features' stamp: 'SC 6/7/2021 22:59:28'!
+push: element
+	objectTope _ OOStackObjectNotEmpty with: element nextTo: objectTope . 
+! !
 
-!OOStack methodsFor: 'as yet unclassified' stamp: 'SC 6/5/2021 21:40:07'!
-push: pushContent
-	collection addLast: pushContent.! !
-
-!OOStack methodsFor: 'as yet unclassified' stamp: 'SC 6/5/2021 21:45:23'!
+!OOStack methodsFor: 'features' stamp: 'SC 6/8/2021 08:09:40'!
 size
-	^ collection size.! !
+	^objectTope numberOfObjects.! !
 
-!OOStack methodsFor: 'as yet unclassified' stamp: 'SC 6/5/2021 17:03:01'!
+!OOStack methodsFor: 'features' stamp: 'SC 6/7/2021 20:36:29'!
 top
-	
-	collection isEmpty ifTrue: [
-		self error: OOStack stackEmptyErrorDescription ].
-	^collection last.! !
+	^objectTope topObject.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -220,6 +166,86 @@ OOStack class
 stackEmptyErrorDescription
 
 	^ 'Stack is empty'! !
+
+
+!classDefinition: #OOStackObject category: 'Stack-Exercise'!
+Object subclass: #OOStackObject
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!OOStackObject methodsFor: 'private' stamp: 'SC 6/7/2021 20:06:44'!
+isEmptyObject
+	^self subclassResponsibility.! !
+
+!OOStackObject methodsFor: 'private' stamp: 'SC 6/8/2021 08:09:40'!
+numberOfObjects
+	^ self subclassResponsibility.! !
+
+!OOStackObject methodsFor: 'private' stamp: 'SC 6/7/2021 20:18:39'!
+topObject
+	^self subclassResponsibility.! !
+
+
+!classDefinition: #OOStackObjectEmpty category: 'Stack-Exercise'!
+OOStackObject subclass: #OOStackObjectEmpty
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!OOStackObjectEmpty methodsFor: 'private' stamp: 'SC 6/7/2021 20:05:50'!
+isEmptyObject
+	^true.! !
+
+!OOStackObjectEmpty methodsFor: 'private' stamp: 'SC 6/8/2021 08:09:40'!
+numberOfObjects
+	^0.! !
+
+!OOStackObjectEmpty methodsFor: 'private' stamp: 'SC 6/7/2021 20:19:57'!
+topObject
+	^ self error: OOStack stackEmptyErrorDescription.! !
+
+
+!classDefinition: #OOStackObjectNotEmpty category: 'Stack-Exercise'!
+OOStackObject subclass: #OOStackObjectNotEmpty
+	instanceVariableNames: 'value next'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!OOStackObjectNotEmpty methodsFor: 'private' stamp: 'SC 6/7/2021 20:07:18'!
+isEmptyObject
+	^false.! !
+
+!OOStackObjectNotEmpty methodsFor: 'private' stamp: 'SC 6/8/2021 08:10:45'!
+nextObject
+	^next.! !
+
+!OOStackObjectNotEmpty methodsFor: 'private' stamp: 'SC 6/8/2021 08:10:45'!
+numberOfObjects
+	^ 1 + self nextObject numberOfObjects.! !
+
+!OOStackObjectNotEmpty methodsFor: 'private' stamp: 'SC 6/7/2021 20:30:55'!
+topObject
+	^value! !
+
+
+!OOStackObjectNotEmpty methodsFor: 'initialization' stamp: 'SC 6/8/2021 08:14:40'!
+initializeObjectWith: element AndnNextTo: nextElement
+	value _ element.
+	next  _ nextElement.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'OOStackObjectNotEmpty class' category: 'Stack-Exercise'!
+OOStackObjectNotEmpty class
+	instanceVariableNames: ''!
+
+!OOStackObjectNotEmpty class methodsFor: 'as yet unclassified' stamp: 'SC 6/8/2021 08:14:40'!
+with: element nextTo: nextElement
+	^self new initializeObjectWith: element AndnNextTo: nextElement.! !
 
 
 !classDefinition: #SentenceFinderByPrefix category: 'Stack-Exercise'!
