@@ -118,6 +118,106 @@ TestCase subclass: #SentenceFinderByPrefixTest
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'NA 6/8/2021 21:32:02'!
+test01IfTheWordIsInTheStackItShouldBeFounded
+	
+	|stack wordFinder collectionOfWords|
+	stack _ OOStack new.
+	wordFinder _ SentenceFinderByPrefix new.
+	stack push: 'palabra'.
+	collectionOfWords _ wordFinder findSentenceWithPrefix: 'pala' inStack: stack. 
+	self assert: collectionOfWords size = 1.
+	! !
+
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'NA 6/8/2021 21:31:51'!
+test02IfTheWordIsNotInTheStackItShouldNotBeFounded
+	
+	|stack wordFinder collectionOfWords|
+	stack _ OOStack new.
+	wordFinder _ SentenceFinderByPrefix new.
+	stack push: 'palabra'.
+	collectionOfWords _ wordFinder findSentenceWithPrefix: 'test' inStack: stack. 
+	self assert: collectionOfWords size = 0.! !
+
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'NA 6/8/2021 21:32:38'!
+test03IfTheWordToFindIsNotAPrefixItShouldNotBeFounded
+	
+	|stack wordFinder collectionOfWords|
+	stack _ OOStack new.
+	wordFinder _ SentenceFinderByPrefix new.
+	stack push: 'palabra'.
+	collectionOfWords _ wordFinder findSentenceWithPrefix: 'abra' inStack: stack. 
+	self assert: collectionOfWords size = 0.! !
+
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'NA 6/8/2021 22:01:19'!
+test04TheSentenceFinderShouldBeCaseSensitive
+	
+	|stack wordFinder collectionOfWords|
+	stack _ OOStack new.
+	wordFinder _ SentenceFinderByPrefix new.
+	stack push: 'Palabra'.
+	collectionOfWords _ wordFinder findSentenceWithPrefix: 'pala' inStack: stack. 
+	self assert: collectionOfWords size = 0.
+	
+	collectionOfWords _ wordFinder findSentenceWithPrefix: 'Pala' inStack: stack. 
+	self assert: collectionOfWords size = 1.! !
+
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'NA 6/8/2021 22:26:01'!
+test05TheStackRemainsTheSameAfterSearchForAWord
+	
+	|stack wordFinder|
+	stack _ OOStack new.
+	wordFinder _ SentenceFinderByPrefix new.
+	stack push: 'Palabra'.
+	stack push: 'Test'.
+	stack push: 'Otro'.
+	wordFinder findSentenceWithPrefix: 'Te' inStack: stack. 
+	self assert: stack size = 3.
+	self assert: stack pop = 'Otro'.
+	self assert: stack pop = 'Test'.
+	self assert: stack pop = 'Palabra'.! !
+
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'NA 6/8/2021 22:47:27'!
+test06CanNotFindAWordWithAnInvalidStack
+	
+	|stack wordFinder|
+	stack _ nil.
+	wordFinder _ SentenceFinderByPrefix new.
+	self
+		should: [ wordFinder findSentenceWithPrefix: 'ho' inStack: stack]
+		raise: Error
+		withExceptionDo: [ :anError |
+			self assert: anError messageText = SentenceFinderByPrefix NullStackError].
+	! !
+
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'NA 6/8/2021 22:58:17'!
+test07ShouldSearchForAllTheMatchingWords
+
+	|stack wordFinder collectionOfWords|
+	stack _ OOStack new.
+	wordFinder _ SentenceFinderByPrefix new.
+	stack push: 'Palabra'.
+	stack push: 'Pala'.
+	stack push: 'Palo'.
+	collectionOfWords _ wordFinder findSentenceWithPrefix: 'Pa' inStack: stack. 
+	
+	self assert: collectionOfWords size =  3.
+	self assert: (collectionOfWords indexOf: 'Palabra') = 3.
+	self assert: (collectionOfWords indexOf: 'Pala') = 2.
+	self assert: (collectionOfWords indexOf: 'Palo') = 1.! !
+
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'NA 6/8/2021 23:00:15'!
+test08NoMatchesForEmptyWord
+	
+	|stack wordFinder collectionOfWords|
+	stack _ OOStack new.
+	wordFinder _ SentenceFinderByPrefix new.
+	stack push: 'Palabra'.
+	stack push: 'Test'.
+	collectionOfWords _ wordFinder findSentenceWithPrefix: '' inStack: stack.
+	self assert: collectionOfWords size = 0.
+! !
+
 
 !classDefinition: #OOStack category: 'Stack-Exercise'!
 Object subclass: #OOStack
@@ -203,9 +303,9 @@ isEmptyObject
 numberOfObjects
 	^0.! !
 
-!OOStackObjectEmpty methodsFor: 'private' stamp: 'SC 6/7/2021 20:19:57'!
+!OOStackObjectEmpty methodsFor: 'private' stamp: 'NA 6/8/2021 19:55:02'!
 topObject
-	^ self error: OOStack stackEmptyErrorDescription.! !
+	^self error: OOStack stackEmptyErrorDescription.! !
 
 
 !classDefinition: #OOStackObjectNotEmpty category: 'Stack-Exercise'!
@@ -254,3 +354,36 @@ Object subclass: #SentenceFinderByPrefix
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
+
+!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'NA 6/8/2021 23:04:16'!
+findSentenceWithPrefix: aPrefix inStack: aStack
+	
+	|auxiliarStack wordToCompare collectionWithFilteredWords|
+	aStack ifNil: [^self error: SentenceFinderByPrefix NullStackError].
+	auxiliarStack _ OOStack new.
+	collectionWithFilteredWords _ OrderedCollection new.
+	aPrefix isEmpty ifTrue: [^collectionWithFilteredWords].
+	
+	(aStack size) timesRepeat: [
+		wordToCompare _ aStack pop.
+		(wordToCompare beginsWith: aPrefix) ifTrue: [collectionWithFilteredWords add: wordToCompare].
+		auxiliarStack push: wordToCompare].
+	
+	(auxiliarStack size) timesRepeat: [
+		aStack push: (auxiliarStack pop)].
+	
+	^collectionWithFilteredWords.
+	
+	
+	! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'SentenceFinderByPrefix class' category: 'Stack-Exercise'!
+SentenceFinderByPrefix class
+	instanceVariableNames: ''!
+
+!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'NA 6/8/2021 22:33:56'!
+NullStackError
+	
+	^'El Stack no es valido'! !
