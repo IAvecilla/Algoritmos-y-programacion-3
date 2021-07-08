@@ -5,60 +5,75 @@ TestCase subclass: #PortfolioTest
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio'!
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'NA 7/6/2021 18:24:43'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'Stephanie Castillo 7/8/2021 13:36:26'!
+accountWithDeposit: moneyToDeposit
+	
+	|newAccount|
+	
+	newAccount _ ReceptiveAccount new.
+	Deposit register: moneyToDeposit on: newAccount. 
+	^newAccount.! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'Stephanie Castillo 7/8/2021 13:38:35'!
+createPorfolioWhitAAccount: newAccount 
+
+	^Portfolio with: newAccount.! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'Stephanie Castillo 7/8/2021 13:57:46'!
+createPorfolioWhitFirstAccount: firstAccount AndSecondAccount: secondAccount 
+
+	^Portfolio with: firstAccount andWith: secondAccount.! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'Stephanie Castillo 7/8/2021 13:18:16'!
+porfolioNew
+
+	^Portfolio new.! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'Stephanie Castillo 7/8/2021 13:28:22'!
+returnAccountBalanceWithinThePorfolio: porfolio
+	
+	^porfolio allTransactions.! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'Stephanie Castillo 7/8/2021 13:48:42'!
+sumTheFirstAccount: firstAccount andSecondAcountThatHasPortfolio: secondAccount	
+	
+	^secondAccount balance + firstAccount balance.! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'Stephanie Castillo 7/8/2021 13:19:17'!
 test01PortfolioWithoutAccountHasABalanceOfZero
 	
-	|newPortfolio|
-	newPortfolio _ Portfolio new.
-	self assert: newPortfolio balance equals: 0.! !
+	self assert: self porfolioNew balance equals: 0.! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'NA 7/6/2021 18:41:43'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'Stephanie Castillo 7/8/2021 13:41:21'!
 test02BalanceOfAPortfolioWithOneAccountIsTheBalanceOfTheAccount
 	
-	|newPortfolio newAccount|
-	newAccount _ ReceptiveAccount new.
-	Deposit register: 100*peso on: newAccount. 
-	newPortfolio _ Portfolio with: newAccount.
-	
-	self assert: newAccount balance equals: newPortfolio balance.! !
+	|newAccount|
+	newAccount _ self accountWithDeposit: 100*peso.
+	self assert: newAccount balance equals: (self createPorfolioWhitAAccount: newAccount) balance.! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'NA 7/6/2021 18:59:20'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'Stephanie Castillo 7/8/2021 13:58:55'!
 test03BalanceOfAPortfolioWithManyAccountsIsTheSumOfTheBalanceOfTheAccounts
 	
 	|firstAccount secondAccount newPortfolio|
-	firstAccount _ ReceptiveAccount new.
-	Deposit register: 100*peso on: firstAccount. 
-	secondAccount _ ReceptiveAccount new.
-	Deposit register: 200*peso on: secondAccount.
-	newPortfolio _ Portfolio with: firstAccount andWith: secondAccount.
-	
-	^self assert: newPortfolio balance equals: secondAccount balance + firstAccount balance.
-	
-	
-	! !
+	firstAccount _ self accountWithDeposit: 100*peso.
+	secondAccount _ self accountWithDeposit: 200*peso.
+	newPortfolio _ self createPorfolioWhitFirstAccount: firstAccount AndSecondAccount: secondAccount.
+	^self assert: newPortfolio balance equals: (self sumTheFirstAccount: firstAccount andSecondAcountThatHasPortfolio: secondAccount). ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'NA 7/7/2021 18:22:07'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'Stephanie Castillo 7/8/2021 13:55:28'!
 test04ABalanceOfAComposedPortfolioIsBalanceOfAllItsAccounts
 	
 	|firstAccount secondAccount simplePortfolio composedPortfolio|
-	firstAccount _ ReceptiveAccount new.
-	Deposit register: 100*peso on: firstAccount.
-	secondAccount _ ReceptiveAccount new.
-	Deposit register: 50* peso on: secondAccount.
-	simplePortfolio _ Portfolio with: firstAccount.
+	firstAccount _ self accountWithDeposit: 1000 *peso.
+	secondAccount _ self accountWithDeposit: 5000* peso.
+	simplePortfolio _  self createPorfolioWhitAAccount: firstAccount.
 	composedPortfolio _ Portfolio with: secondAccount andWith: simplePortfolio.
-	
-	self assert: composedPortfolio balance equals: simplePortfolio balance + secondAccount balance.
-	! !
+	self assert: composedPortfolio balance equals: simplePortfolio balance + secondAccount balance.! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'NA 7/6/2021 20:27:25'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'Stephanie Castillo 7/8/2021 14:01:36'!
 test05AnEmptyPortfolioDoesNotHasTransactionsRegistered
 	
-	|newPortfolio newTransaction|
-	newPortfolio _ Portfolio new.
-	newTransaction _ Deposit for: 100*peso.
-	
-	self deny: (newPortfolio hasRegistered: newTransaction).! !
+	self deny: (self porfolioNew hasRegistered: ( Deposit for: 100*peso)).! !
 
 !PortfolioTest methodsFor: 'as yet unclassified' stamp: 'NA 7/6/2021 20:27:15'!
 test06APortfolioWithAnAccountHasATransactionRegistered
@@ -468,7 +483,6 @@ register: aValue on: account
 	account register: transaction.
 	^ transaction! !
 
-
 
 !classDefinition: #Deposit category: 'ServiciosFinancieros-Ejercicio'!
 AccountTransaction subclass: #Deposit
@@ -505,7 +519,6 @@ for: aValue
 
 	^ self new initializeFor: aValue ! !
 
-
 
 !classDefinition: #Withdraw category: 'ServiciosFinancieros-Ejercicio'!
 AccountTransaction subclass: #Withdraw
@@ -541,7 +554,6 @@ Withdraw class
 for: aValue
 
 	^ self new initializeFor: aValue ! !
-
 
 
 !classDefinition: #Transfer category: 'ServiciosFinancieros-Ejercicio'!
