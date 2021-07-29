@@ -40,6 +40,8 @@ También implementamos el mensaje find de SentenceFinderByPrefix que dado un pre
 
 - **[Resolución](https://github.com/IAvecilla/Algoritmos-y-programacion-III/blob/main/04-Stack/Stack-Exercise-Entregable.st)**
 
+---
+
 #### 05. MarsRover:
 El objetivo del ejercicio era comenzar a practicar TDD (Test Driven Development) implementando un MarsRover que procesa comandos para moverse hacia adelante y hacia atras
 y cambiar su orientacion a un punto cardinal.
